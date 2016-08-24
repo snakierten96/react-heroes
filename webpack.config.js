@@ -1,8 +1,22 @@
+var webpack = require('webpack'),
+    path = require('path');
+
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: [
+    "webpack/hot/dev-server",
+    "webpack-hot-middleware/client",
+    "./src/index.tsx"
+  ],
   output: {
-    filename: "./dist/bundle.js"
+    path: '/dist', //path.resolve('./dist'),
+    filename: "bundle.js"
   },
+  
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ],
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
@@ -16,13 +30,13 @@ module.exports = {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by
       // 'ts-loader'
-      { test: /\.tsx?$/, loader: "ts-loader" }
+      { test: /\.tsx?$/, exclude: /node_modules/, loader: "ts-loader" }
     ],
 
     preloaders: [
       // All output '.js' files will have any sourcemaps re-processed by
       // 'source-map-loader'
-      { test: /\.js$/, loader: "source-map-loader" }
+      { test: /\.js$/, exclude: /node_modules/, loader: "source-map-loader" }
     ]
   },
 
